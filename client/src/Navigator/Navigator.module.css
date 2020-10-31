@@ -1,0 +1,15 @@
+.category {
+  font-size: 32px;
+  padding: 3px 10px;
+  cursor: pointer;
+}
+
+.category a {
+  color: rgb(101, 111, 124);
+}
+
+.navigator {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}

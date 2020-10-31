@@ -1,0 +1,48 @@
+.container {
+  margin-top: 80px;
+}
+
+.cameras_containter {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  width: 90vw;
+  height: calc(100vh - 4em);
+  grid-gap: 2em;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.camera_preview video {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 769px) {
+  .cameras_containter {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    width: 90vw;
+    height: calc(100vh - 4em);
+    grid-gap: 2em;
+  }
+}
+
+@media (max-width: 376px) {
+  .cameras_containter {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    width: 100vmin;
+    height: calc(100vh - 4em);
+    grid-gap: 2em;
+  }
+  .camera_preview video {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+  }
+}

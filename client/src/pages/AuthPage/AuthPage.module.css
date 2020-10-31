@@ -1,0 +1,36 @@
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 50px;
+  margin-top: 80px;
+}
+
+.input {
+  width: 100%;
+}
+
+.buttonContainer {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 80px;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.button {
+  min-width: 70%;
+
+  margin-bottom: 10px;
+}
+
+.additionalContainer {
+  margin-top: 10px;
+  display: flex;
+}
+
+.checkboxContainer {
+  display: flex;
+}

@@ -1,0 +1,80 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-bottom: 30px;
+  margin-top: 80px;
+  padding: 0 20px;
+  box-sizing: border-box;
+  align-items: center;
+}
+
+form {
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+}
+
+.inputContainer {
+  margin-bottom: 20px;
+  height: 40px;
+  width: 100%;
+  box-sizing: border-box;
+  outline: none;
+  border-radius: 3px;
+  font-size: 32px;
+}
+
+.buttonContainer {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.textAreaContainer {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.textAreaContainer textarea {
+  width: 100%;
+  border: 1px solid grey;
+  height: 100%;
+  border-radius: 3px;
+}
+
+.button {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.arrow_icon {
+  /* position: absolute;
+  right: 20px; */
+}
+
+.dropdown {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+@media (min-width: 376px) {
+  .container {
+    width: 500px;
+  }
+}
+
+.mobileFunctions {
+  display: flex;
+  justify-content: space-around;
+  font-size: 45px;
+  margin-top: 20px;
+  width: 100%;
+  color: #1365ca;
+}
+
+.nfc {
+  font-size: 35px;
+  margin-top: 6px;
+}

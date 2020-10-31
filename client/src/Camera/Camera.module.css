@@ -1,0 +1,13 @@
+.container {
+  width: 70wh;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+video {
+  margin-top: 80px;
+  width: 90wh;
+
+  height: 70vh;
+}
