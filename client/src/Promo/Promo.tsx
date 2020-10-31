@@ -20,9 +20,6 @@ export const Promo = () => {
   return (
     <div className={styles.promo}>
       <div className={styles.slider}>{slider}</div>
-      <div className={styles.table}>
-        <EnhancedTable />
-      </div>
     </div>
   );
 };

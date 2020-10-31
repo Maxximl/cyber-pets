@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import {
   createStyles,
@@ -25,64 +25,56 @@ import Switch from "@material-ui/core/Switch";
 import DeleteIcon from "@material-ui/icons/Delete";
 import FilterListIcon from "@material-ui/icons/FilterList";
 
-interface Data {
-  type: string;
-  age: string;
-  name: string;
+export interface Data {
+  cardId: string;
+  nickName: string;
+  birthYear: string;
   weight: string;
-  color: string;
-  number: string;
 }
 
-const data = [
-  {
-    name: "Тузик1",
-    age: "10",
-    type: "C",
-    weight: "5",
-    color: "Белый",
-    number: "0",
-  },
-  {
-    name: "Тузик2",
-    age: "10",
-    type: "C",
-    weight: "5",
-    color: "Белый",
-    number: "1",
-  },
-  {
-    name: "Тузик3",
-    age: "10",
-    type: "C",
-    weight: "5",
-    color: "Белый",
-    number: "2",
-  },
-  {
-    name: "Тузик4",
-    age: "10",
-    type: "C",
-    weight: "5",
-    color: "Белый",
-    number: "3",
-  },
-];
+// const data = [
+//   {
+//     name: "Тузик1",
+//     age: "10",
+//     type: "C",
+//     weight: "5",
+//     color: "Белый",
+//     number: "0",
+//   },
+//   {
+//     name: "Тузик2",
+//     age: "10",
+//     type: "C",
+//     weight: "5",
+//     color: "Белый",
+//     number: "1",
+//   },
+//   {
+//     name: "Тузик3",
+//     age: "10",
+//     type: "C",
+//     weight: "5",
+//     color: "Белый",
+//     number: "2",
+//   },
+//   {
+//     name: "Тузик4",
+//     age: "10",
+//     type: "C",
+//     weight: "5",
+//     color: "Белый",
+//     number: "3",
+//   },
+// ];
 
 function createData(
-  name: string,
-  age: string,
-  type: string,
-  weight: string,
-  color: string,
-  number: string
+  cardId: string,
+  nickName: string,
+  birthYear: string,
+  weight: string
 ): Data {
-  return { name, age, type, weight, color, number };
+  return { cardId, nickName, birthYear, weight };
 }
-
-const rows = data.map((d) =>
-  createData(d.name, d.age, d.type, d.weight, d.color, d.number)
-);
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -127,15 +119,19 @@ interface HeadCell {
 
 const headCells: HeadCell[] = [
   {
-    id: "number",
+    id: "cardId",
     numeric: false,
     disablePadding: true,
     label: "Карточка учета животного №",
   },
-  { id: "type", numeric: true, disablePadding: false, label: "Вид" },
-  { id: "age", numeric: true, disablePadding: false, label: "Возраст" },
+  { id: "nickName", numeric: true, disablePadding: false, label: "Кличка" },
+  {
+    id: "birthYear",
+    numeric: true,
+    disablePadding: false,
+    label: "Год рождения",
+  },
   { id: "weight", numeric: true, disablePadding: false, label: "Вес" },
-  { id: "name", numeric: true, disablePadding: false, label: "Кличка" },
 ];
 
 interface EnhancedTableProps {
@@ -302,14 +298,30 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function EnhancedTable() {
+const convertName = (name: string) => {
+  if (name) {
+    return name[0].toUpperCase() + name.slice(1);
+  } else {
+    return "Без клички";
+  }
+};
+
+export default function EnhancedTable(props: { data: Data[] }) {
   const classes = useStyles();
   const [order, setOrder] = React.useState<Order>("asc");
-  const [orderBy, setOrderBy] = React.useState<keyof Data>("name");
+  const [orderBy, setOrderBy] = React.useState<keyof Data>("cardId");
   const [selected, setSelected] = React.useState<string[]>([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rows, setRows] = useState<Data[]>([]);
+
+  useEffect(() => {
+    const rowsTmp = props.data.map((d) =>
+      createData(d.cardId, convertName(d.nickName), d.birthYear, d.weight)
+    );
+    setRows(rowsTmp);
+  }, [props.data]);
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -322,7 +334,7 @@ export default function EnhancedTable() {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
+      const newSelecteds = rows.map((n) => n.cardId);
       setSelected(newSelecteds);
       return;
     }
@@ -393,17 +405,17 @@ export default function EnhancedTable() {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
+                  const isItemSelected = isSelected(row.cardId);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.name)}
+                      onClick={(event) => handleClick(event, row.cardId)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
+                      key={row.cardId}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -418,12 +430,11 @@ export default function EnhancedTable() {
                         scope="row"
                         padding="none"
                       >
-                        {row.name}
+                        {row.cardId}
                       </TableCell>
-                      <TableCell align="right">{row.name}</TableCell>
-                      <TableCell align="right">{row.age}</TableCell>
-                      <TableCell align="right">{row.type}</TableCell>
-                      <TableCell align="right">{row.color}</TableCell>
+                      <TableCell align="right">{row.nickName}</TableCell>
+                      <TableCell align="right">{row.birthYear}</TableCell>
+                      <TableCell align="right">{row.weight}</TableCell>
                     </TableRow>
                   );
                 })}
@@ -447,7 +458,7 @@ export default function EnhancedTable() {
       </Paper>
       <FormControlLabel
         control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
+        label="Компактный вид"
       />
     </div>
   );

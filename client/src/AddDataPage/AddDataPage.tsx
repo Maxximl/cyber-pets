@@ -167,6 +167,29 @@ export const AddDataPage = () => {
         </div>
 
         <div className={styles.inputContainer}>
+          <FormControl className={styles.dropdown}>
+            <InputLabel id="demo-simple-select-outlined-label" required>
+              Порода
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-outlined-label"
+              id="demo-simple-select-outlined"
+              label="Age"
+              required
+              name="shelter"
+              // onChange={handleOnSexChange}
+            >
+              {breedList.map((breed) => {
+                return (
+                  <MenuItem key={breed.id} value={breed.id}>
+                    {breed.breed}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+        </div>
+        <div className={styles.inputContainer}>
           <TextField
             className={styles.input}
             label="Вид"

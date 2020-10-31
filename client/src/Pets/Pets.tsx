@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./Pets.module.css";
 import Table from "../Table";
 import { useHttp } from "../hooks/http.hook";
+import { Data } from "../Table/Table";
 
 export interface IBreed {
   id: number;
@@ -19,32 +20,37 @@ export interface IShelter {
 }
 
 export const Pets = () => {
-  // const [breedList, setBreedList] = useState<IBreed[]>();
-  // const [shelterList, setShelterList] = useState<IShelter[]>();
+  const { request } = useHttp();
+  const [data, setData] = useState<Data[]>([]);
 
-  // const { request } = useHttp();
+  const setFilter = async () => {
+    const obj = {
+      gender: 1,
+      size: 11,
+    };
 
-  // const getData = async () => {
-  //   try {
-  //     const breed = await request("/data/breedList");
-  //     console.log("Data", breed);
-  //     const shelter = await request("/data/shelterList");
-  //     setBreedList(breed);
-  //     console.log("Data", shelter);
-  //     setShelterList(shelter);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+    var raw = JSON.stringify(obj);
+    const header = {
+      "Content-Type": "application/json",
+    };
 
-  // useEffect(() => {
-  //   getData();
-  // }, []);
+    try {
+      const data = await request(`data/filter`, "POST", obj);
+      setData(data.result || []);
+      console.log(data.result);
+    } catch (error) {
+      console.log("Error", error);
+    }
+  };
+
+  useEffect(() => {
+    setFilter();
+  }, []);
 
   return (
     <div className={styles.container}>
       Петы
-      <Table />{" "}
+      <Table data={data} />{" "}
     </div>
   );
 };

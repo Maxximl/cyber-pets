@@ -1,7 +1,7 @@
 const express = require("express");
 const config = require("config");
 const { request } = require("express");
-const sequelize = require("./utils/database");
+const sequelize = require("./utils/db");
 const path = require("path");
 // const database = require("./utils/dbConfig");
 // const db = require("./utils/datab");
@@ -40,7 +40,7 @@ const PORT = config.get("port") || 5000;
 
 async function start() {
   try {
-    // await sequelize.sync();
+    await sequelize.sync();
     // db.then((client) => {
     //   client.query("SELECT * FROM `pets`", function (err, results, fields) {
     //     if (err) throw err;
