@@ -25,6 +25,27 @@ export interface IPetType {
   id: number;
   type: string;
 }
+export interface IColor {
+  id: number;
+  petTypeId: number;
+  color: "Черный ";
+}
+
+export interface IHair {
+  id: number;
+  petTypeId: number;
+  hair: string;
+}
+
+export interface IEars {
+  id: number;
+  ears: string;
+}
+
+export interface ISizes {
+  id: number;
+  size: string;
+}
 
 export const AddDataPage = () => {
   const history = useHistory();
@@ -41,38 +62,61 @@ export const AddDataPage = () => {
     wool: "",
   });
 
-  const [breedList, setBreedList] = useState<IBreed[]>([]);
-  const [shelterList, setShelterList] = useState<IShelter[]>([]);
-  const [tailList, setTailList] = useState<ITail[]>([]);
-  const [petTypeList, setPetTypeList] = useState<IPetType[]>([]);
-  const [searchedBreed, setSearchedBreed] = useState<string>("");
+  // const [breedList, setBreedList] = useState<IBreed[]>([]);
+  // const [shelterList, setShelterList] = useState<IShelter[]>([]);
+  // const [tailList, setTailList] = useState<ITail[]>([]);
+  // const [petTypeList, setPetTypeList] = useState<IPetType[]>([]);
+  // const [petColorTypes, setPetColorTypes] = useState<IColor[]>([]);
+  // const [petHairTypes, setPetHairTypes] = useState<IHair[]>([]);
+  // const [petEarsTypes, setPetEarsTypes] = useState<IEars[]>([]);
+  // const [petSizes, setPetSizes] = useState<ISizes[]>([]);
 
   const { request } = useHttp();
 
-  const getData = async () => {
-    try {
-      const breed = await request("/data/breedList");
-      console.log("Data", breed.result);
-      const shelter = await request("/data/shelterList");
-      setBreedList(breed.result);
-      console.log("Data", shelter);
-      setShelterList(shelter.result);
-      const tail = await request("/data/tailList");
-      console.log(tail.result);
-      setTailList(tail.result);
-      const type = await request("/data/petTypeList");
-      console.log(type.result);
-      setPetTypeList(type.result);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const getData = async () => {
+  //   try {
+  //     const breed = await request("/data/breedList");
+  //     console.log("Data", breed.result);
+  //     const shelter = await request("/data/shelterList");
+  //     setBreedList(breed.result);
+  //     console.log("Data", shelter);
+  //     setShelterList(shelter.result);
+  //     const tail = await request("/data/tailList");
+  //     console.log(tail.result);
+  //     setTailList(tail.result);
+  //     const type = await request("/data/petTypeList");
+  //     console.log(type.result);
+  //     setPetTypeList(type.result);
+  //     const color = await request("/data/petColorTypes");
+  //     setPetColorTypes(color.result);
+  //     const hair = await request("/data/pethairtypes");
+  //     setPetHairTypes(hair.result);
+  //     const ears = await request("/data/petearstypes");
+  //     setPetEarsTypes(ears.result);
+  //     const size = await request("/data/petsizes");
+  //     setPetSizes(size.result);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
-  useEffect(() => {
-    getData();
-  }, []);
+  // useEffect(() => {
+  //   getData();
+  // }, []);
 
-  const { token } = useContext(AuthContext);
+  const {
+    token,
+    data: {
+      petColorTypes,
+      petEarsTypes,
+      petHairTypes,
+      petSizes,
+      petTypeList,
+      shelterList,
+      tailList,
+      breedList,
+    },
+  } = useContext(AuthContext);
 
   const handleOnSexChange = (
     event: React.ChangeEvent<{
@@ -132,6 +176,14 @@ export const AddDataPage = () => {
           />
         </div>
         <div className={styles.inputContainer}>
+          <TextField
+            className={styles.input}
+            label="Возраст"
+            onChange={changeHandler}
+            name="age"
+          />
+        </div>
+        <div className={styles.inputContainer}>
           <FormControl className={styles.dropdown}>
             <InputLabel id="demo-simple-select-outlined-label" required>
               Пол
@@ -150,6 +202,29 @@ export const AddDataPage = () => {
               </MenuItem>
               <MenuItem value={"М"}>М</MenuItem>
               <MenuItem value={"Ж"}>Ж</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+        <div className={styles.inputContainer}>
+          <FormControl className={styles.dropdown}>
+            <InputLabel id="demo-simple-select-outlined-label" required>
+              Размер
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-outlined-label"
+              id="demo-simple-select-outlined"
+              label="Age"
+              required
+              name="shelter"
+              // onChange={handleOnSexChange}
+            >
+              {petSizes.map((size) => {
+                return (
+                  <MenuItem key={size.id} value={size.id}>
+                    {size.size}
+                  </MenuItem>
+                );
+              })}
             </Select>
           </FormControl>
         </div>
@@ -247,36 +322,73 @@ export const AddDataPage = () => {
           </FormControl>
         </div>
         <div className={styles.inputContainer}>
-          <TextField
-            className={styles.input}
-            label="Возраст"
-            onChange={changeHandler}
-            name="age"
-          />
+          <FormControl className={styles.dropdown}>
+            <InputLabel id="demo-simple-select-outlined-label" required>
+              Окрас
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-outlined-label"
+              id="demo-simple-select-outlined"
+              label="Age"
+              required
+              name="color"
+              // onChange={handleOnSexChange}
+            >
+              {petColorTypes.map((color) => {
+                return (
+                  <MenuItem key={color.id} value={color.id}>
+                    {color.color}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
         </div>
         <div className={styles.inputContainer}>
-          <TextField
-            className={styles.input}
-            label="Окрас"
-            onChange={changeHandler}
-            name="color"
-          />
+          <FormControl className={styles.dropdown}>
+            <InputLabel id="demo-simple-select-outlined-label" required>
+              Тип шерсти
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-outlined-label"
+              id="demo-simple-select-outlined"
+              label="Age"
+              required
+              name="color"
+              // onChange={handleOnSexChange}
+            >
+              {petHairTypes.map((hair) => {
+                return (
+                  <MenuItem key={hair.id} value={hair.id}>
+                    {hair.hair}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
         </div>
         <div className={styles.inputContainer}>
-          <TextField
-            className={styles.input}
-            label="Шерсть"
-            onChange={changeHandler}
-            name="wool"
-          />
-        </div>
-        <div className={styles.inputContainer}>
-          <TextField
-            className={styles.input}
-            label="Уши"
-            onChange={changeHandler}
-            name="ears"
-          />
+          <FormControl className={styles.dropdown}>
+            <InputLabel id="demo-simple-select-outlined-label" required>
+              Тип ушей
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-outlined-label"
+              id="demo-simple-select-outlined"
+              label="Age"
+              required
+              name="shelter"
+              // onChange={handleOnSexChange}
+            >
+              {petEarsTypes.map((ears) => {
+                return (
+                  <MenuItem key={ears.id} value={ears.id}>
+                    {ears.ears}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
         </div>
         <div className={styles.textAreaContainer}>
           <TextareaAutosize

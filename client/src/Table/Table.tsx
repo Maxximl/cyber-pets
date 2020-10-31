@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import clsx from "clsx";
 import {
   createStyles,
@@ -24,12 +24,24 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import DeleteIcon from "@material-ui/icons/Delete";
 import FilterListIcon from "@material-ui/icons/FilterList";
+import { AuthContext } from "../context/AuthContext";
 
 export interface Data {
+  aviary: number;
+  birhYear: string;
+  breedTypeId: number;
   cardId: string;
+  id: number;
   nickName: string;
-  birthYear: string;
-  weight: string;
+  petColorTypeId: number;
+  petEarsTypeId: number;
+  petHairTypeId: number;
+  petTailTypeId: number;
+  petTypeId: number;
+  petsSizeId: number;
+  sexTypeId: number;
+  specialSigns: string;
+  weight: number;
 }
 
 // const data = [
@@ -68,12 +80,39 @@ export interface Data {
 // ];
 
 function createData(
+  aviary: number,
+  birhYear: string,
+  breedTypeId: number,
   cardId: string,
+  id: number,
   nickName: string,
-  birthYear: string,
-  weight: string
+  petColorTypeId: number,
+  petEarsTypeId: number,
+  petHairTypeId: number,
+  petTailTypeId: number,
+  petTypeId: number,
+  petsSizeId: number,
+  sexTypeId: number,
+  specialSigns: string,
+  weight: number
 ): Data {
-  return { cardId, nickName, birthYear, weight };
+  return {
+    aviary,
+    birhYear,
+    breedTypeId,
+    cardId,
+    id,
+    nickName,
+    petColorTypeId,
+    petEarsTypeId,
+    petHairTypeId,
+    petTailTypeId,
+    petTypeId,
+    petsSizeId,
+    sexTypeId,
+    specialSigns,
+    weight,
+  };
 }
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -126,12 +165,72 @@ const headCells: HeadCell[] = [
   },
   { id: "nickName", numeric: true, disablePadding: false, label: "Кличка" },
   {
-    id: "birthYear",
+    id: "petTypeId",
+    numeric: false,
+    disablePadding: false,
+    label: "Вид",
+  },
+  {
+    id: "birhYear",
     numeric: true,
     disablePadding: false,
     label: "Год рождения",
   },
+  {
+    id: "sexTypeId",
+    numeric: false,
+    disablePadding: false,
+    label: "Пол",
+  },
   { id: "weight", numeric: true, disablePadding: false, label: "Вес" },
+  {
+    id: "aviary",
+    numeric: true,
+    disablePadding: false,
+    label: "Вольер, №",
+  },
+  {
+    id: "breedTypeId",
+    numeric: true,
+    disablePadding: false,
+    label: "Порода",
+  },
+  {
+    id: "petColorTypeId",
+    numeric: true,
+    disablePadding: false,
+    label: "Окрас",
+  },
+  {
+    id: "petEarsTypeId",
+    numeric: false,
+    disablePadding: false,
+    label: "Тип ушей",
+  },
+  {
+    id: "petHairTypeId",
+    numeric: false,
+    disablePadding: false,
+    label: "Тип шерсти",
+  },
+  {
+    id: "petTailTypeId",
+    numeric: false,
+    disablePadding: false,
+    label: "Тип хвоста",
+  },
+  {
+    id: "petsSizeId",
+    numeric: false,
+    disablePadding: false,
+    label: "Размер",
+  },
+  {
+    id: "specialSigns",
+    numeric: false,
+    disablePadding: false,
+    label: "Дополнительная информация",
+  },
 ];
 
 interface EnhancedTableProps {
@@ -316,10 +415,41 @@ export default function EnhancedTable(props: { data: Data[] }) {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [rows, setRows] = useState<Data[]>([]);
 
+  const {
+    data: {
+      petColorTypes,
+      petEarsTypes,
+      petHairTypes,
+      petSizes,
+      petTypeList,
+      shelterList,
+      tailList,
+      breedList,
+    },
+  } = useContext(AuthContext);
+  console.log("breedlist", breedList);
+
   useEffect(() => {
     const rowsTmp = props.data.map((d) =>
-      createData(d.cardId, convertName(d.nickName), d.birthYear, d.weight)
+      createData(
+        d.aviary,
+        d.birhYear,
+        d.breedTypeId,
+        d.cardId,
+        d.id,
+        d.nickName,
+        d.petColorTypeId,
+        d.petEarsTypeId,
+        d.petHairTypeId,
+        d.petTailTypeId,
+        d.petTypeId,
+        d.petsSizeId,
+        d.sexTypeId,
+        d.specialSigns,
+        d.weight
+      )
     );
+
     setRows(rowsTmp);
   }, [props.data]);
 
@@ -433,8 +563,19 @@ export default function EnhancedTable(props: { data: Data[] }) {
                         {row.cardId}
                       </TableCell>
                       <TableCell align="right">{row.nickName}</TableCell>
-                      <TableCell align="right">{row.birthYear}</TableCell>
+                      <TableCell align="right">
+                        {petTypeList[row.petTypeId - 1]?.type}
+                      </TableCell>
+                      <TableCell align="right">{row.birhYear}</TableCell>
+                      {/* <TableCell align="right">{pet}</TableCell> */}
                       <TableCell align="right">{row.weight}</TableCell>
+                      <TableCell align="right">{row.aviary}</TableCell>
+                      <TableCell align="right">
+                        {breedList[row.breedTypeId - 1]?.breed}
+                      </TableCell>
+                      <TableCell align="right">
+                        {petColorTypes[row.petColorTypeId - 1]?.color}
+                      </TableCell>
                     </TableRow>
                   );
                 })}

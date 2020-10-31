@@ -1,4 +1,5 @@
 import { createContext } from 'react';
+import { IData } from '../App';
 
 interface IContext {
     token: string | null,
@@ -7,7 +8,8 @@ interface IContext {
     logout: () => void,
     isAuthentificated: boolean,
     dogs: string[],
-    cats: string[]
+    cats: string[],
+    data: IData
 }
 
 function noop() { }
@@ -18,5 +20,6 @@ export const AuthContext = createContext<IContext>({
     logout: noop,
     isAuthentificated: false,
     dogs: [],
-    cats: []
+    cats: [],
+    data: { tailList: [], breedList: [], shelterList: [], petColorTypes: [], petEarsTypes: [], petHairTypes: [], petSizes: [], petTypeList: [] }
 });

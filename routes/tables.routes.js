@@ -115,13 +115,83 @@ router.get("/petTypeList", (request, response) => {
     });
 });
 
+//список окрасов животных
+router.get("/petColorTypes", (request, response) => {
+  dtm
+    .readValue("petColorTypes")
+    .then((rows) => {
+      if (rows.length !== 0) {
+        response.send({ result: rows });
+      }
+    })
+    .catch((errpor) => {
+      response.send({ code: 400, message: "Ошибка выполнения запроса" });
+    });
+});
+
+//список типа шерсти животных
+router.get("/petHairTypes", (request, response) => {
+  dtm
+    .readValue("petHairTypes")
+    .then((rows) => {
+      if (rows.length !== 0) {
+        response.send({ result: rows });
+      }
+    })
+    .catch((errpor) => {
+      response.send({ code: 400, message: "Ошибка выполнения запроса" });
+    });
+});
+
+//список типа ушей животных
+router.get("/petearsTypes", (request, response) => {
+  dtm
+    .readValue("petearsTypes")
+    .then((rows) => {
+      if (rows.length !== 0) {
+        response.send({ result: rows });
+      }
+    })
+    .catch((errpor) => {
+      response.send({ code: 400, message: "Ошибка выполнения запроса" });
+    });
+});
+
+//список размеров животных
+router.get("/petsizes", (request, response) => {
+  dtm
+    .readValue("petsSizes")
+    .then((rows) => {
+      if (rows.length !== 0) {
+        response.send({ result: rows });
+      }
+    })
+    .catch((errpor) => {
+      response.send({ code: 400, message: "Ошибка выполнения запроса" });
+    });
+});
+
+//список размеров животных
+router.get("/sexTypes", (request, response) => {
+  dtm
+    .readValue("sexTypes")
+    .then((rows) => {
+      if (rows.length !== 0) {
+        response.send({ result: rows });
+      }
+    })
+    .catch((errpor) => {
+      response.send({ code: 400, message: "Ошибка выполнения запроса" });
+    });
+});
+
 //Заявка
 router.post("/createRequest", (request, response) => {
   dtm.createRequest(request.body);
   response.send({ answer: "Спасибо за заявку." });
 });
 
-//
+//фильтр
 router.post("/filter", (request, response) => {
   let sql = "";
   console.log(request.body);
