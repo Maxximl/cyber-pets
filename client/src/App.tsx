@@ -25,6 +25,7 @@ import { AuthContext } from "./context/AuthContext";
 import { useRoutes } from "./hooks/useRoutes";
 import { IBreed, IShelter } from "./Pets";
 import { useHttp } from "./hooks/http.hook";
+import { Data } from "./Table/Table";
 
 const dogs = [
   "http://animalslife.net/videos_for/Lesi_(Serbia)/anim_LesiBac_1506508463_9472Trim_part1.mp4",
@@ -110,6 +111,32 @@ export const App = () => {
     getData();
   }, []);
 
+  const [dataset, setDataset] = useState<Data[]>([]);
+
+  const setFilter = async () => {
+    const obj = {
+      gender: 1,
+      size: 11,
+    };
+
+    var raw = JSON.stringify(obj);
+    const header = {
+      "Content-Type": "application/json",
+    };
+
+    try {
+      const dataset = await request(`data/filter`, "POST");
+      setDataset(dataset.result || []);
+      console.log(dataset.result);
+    } catch (error) {
+      console.log("Error", error);
+    }
+  };
+
+  useEffect(() => {
+    setFilter();
+  }, []);
+
   const { token, login, logout, userId } = useAuth();
   const authorized = !!token;
   const routes = useRoutes(authorized, dogs, cats);
@@ -125,6 +152,7 @@ export const App = () => {
         dogs,
         cats,
         data,
+        dataset,
       }}
     >
       <Router>

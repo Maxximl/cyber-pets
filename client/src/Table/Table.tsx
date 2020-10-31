@@ -25,6 +25,8 @@ import Switch from "@material-ui/core/Switch";
 import DeleteIcon from "@material-ui/icons/Delete";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import { AuthContext } from "../context/AuthContext";
+import { FiExternalLink } from "react-icons/all";
+import { Link } from "react-router-dom";
 
 export interface Data {
   aviary: number;
@@ -422,7 +424,6 @@ export default function EnhancedTable(props: { data: Data[] }) {
       sexTypes,
     },
   } = useContext(AuthContext);
-  console.log("breedlist", breedList);
 
   useEffect(() => {
     const rowsTmp = props.data.map((d) =>
@@ -548,6 +549,18 @@ export default function EnhancedTable(props: { data: Data[] }) {
                           checked={isItemSelected}
                           inputProps={{ "aria-labelledby": labelId }}
                         />
+                      </TableCell>
+                      <TableCell
+                        padding="checkbox"
+                        style={{
+                          cursor: "pointer",
+                          fontSize: "22px",
+                          paddingTop: "3px",
+                        }}
+                      >
+                        <Link to={`/pets/${row.id}`}>
+                          <FiExternalLink />
+                        </Link>
                       </TableCell>
                       <TableCell
                         component="th"

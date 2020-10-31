@@ -12,6 +12,7 @@ import { Content } from "../Content";
 import { Download } from "../Download";
 import { Header } from "../Header";
 import { AuthPage } from "../pages/AuthPage/AuthPage";
+import { PetCard } from "../PetCard";
 import { Pets } from "../Pets";
 import { Promo } from "../Promo";
 
@@ -28,6 +29,9 @@ export const useRoutes = (
         </Route>
         <Route path="/" exact>
           <Promo />
+        </Route>
+        <Route path="/pets/:id">
+          <PetCard />
         </Route>
         <Route path="/report" exact>
           <Download />
@@ -55,6 +59,9 @@ export const useRoutes = (
         </Route>
         <Route path="/" exact>
           <Promo />
+        </Route>
+        <Route path="/pets/:id">
+          <PetCard />
         </Route>
         <Route path="/report" exact>
           <Download />

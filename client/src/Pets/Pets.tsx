@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./Pets.module.css";
 import Table from "../Table";
 import { useHttp } from "../hooks/http.hook";
@@ -6,6 +6,7 @@ import { Data } from "../Table/Table";
 import { Button, InputLabel } from "@material-ui/core";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 export interface IBreed {
   id: number;
@@ -23,36 +24,8 @@ export interface IShelter {
 }
 
 export const Pets = () => {
+  const { dataset } = useContext(AuthContext);
   const { request } = useHttp();
-  const [data, setData] = useState<Data[]>([]);
-
-  const setFilter = async () => {
-    const obj = {
-      gender: 1,
-      size: 11,
-    };
-
-    var raw = JSON.stringify(obj);
-    const header = {
-      "Content-Type": "application/json",
-    };
-
-    try {
-      const data = await request(`data/filter`, "POST");
-      setData(data.result || []);
-      console.log(data.result);
-    } catch (error) {
-      console.log("Error", error);
-    }
-  };
-
-  useEffect(() => {
-    setFilter();
-  }, []);
-
-  // cosnt reportHandler = () => {
-
-  // }
 
   const exportWord = () => {
     const obj = {
@@ -93,7 +66,7 @@ export const Pets = () => {
         .then((result) => {
           download("doc.docx", result);
         });
-      console.log(data);
+      console.log(dataset);
     } catch (error) {
       console.log(error);
     }
@@ -120,7 +93,7 @@ export const Pets = () => {
         </Button>
       </div>
       <div className={styles.tableContainer}>
-        <Table data={data} />{" "}
+        <Table data={dataset} />{" "}
       </div>
     </div>
   );
