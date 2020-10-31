@@ -1,5 +1,8 @@
-const { Router } = require("express");
+const { Router, response } = require("express");
 const router = Router();
+var path = require("path");
+var mime = require("mime");
+var fs = require("fs");
 
 let dataBase = require("../utils/database");
 let dtm = dataBase.initDB();
@@ -172,7 +175,7 @@ router.get("/petsizes", (request, response) => {
 });
 
 //список размеров животных
-router.get("/sexTypes", (request, response) => {
+router.get("/petSexTypes", (request, response) => {
   dtm
     .readValue("sexTypes")
     .then((rows) => {
@@ -183,6 +186,28 @@ router.get("/sexTypes", (request, response) => {
     .catch((errpor) => {
       response.send({ code: 400, message: "Ошибка выполнения запроса" });
     });
+});
+
+// router.get("/report", (request, res) => {
+//   res.set(
+//     "Content-Type",
+//     "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+//   );
+//   res.set("Content-Disposition", "attachment; filename=generated.docx");
+//   res.download("C:/tst/generated.docx");
+// });
+
+router.get("/report", function (req, res) {
+  var file = "C:\\tst\\generated.docx";
+
+  var filename = path.basename(file);
+  var mimetype = mime.lookup(file);
+
+  res.setHeader("Content-disposition", "attachment; filename=" + filename);
+  res.setHeader("Content-type", mimetype);
+
+  var filestream = fs.createReadStream(file);
+  filestream.pipe(res);
 });
 
 //Заявка
@@ -267,4 +292,5 @@ router.put("/exportToWord", (request, response) => {
       response.send({ code: 400, message: "Ошибка выполнения запроса" });
     });
 });
+
 module.exports = router;

@@ -21,5 +21,5 @@ export const AuthContext = createContext<IContext>({
     isAuthentificated: false,
     dogs: [],
     cats: [],
-    data: { tailList: [], breedList: [], shelterList: [], petColorTypes: [], petEarsTypes: [], petHairTypes: [], petSizes: [], petTypeList: [] }
+    data: { tailList: [], breedList: [], shelterList: [], petColorTypes: [], petEarsTypes: [], petHairTypes: [], petSizes: [], petTypeList: [], sexTypes: [] }
 });

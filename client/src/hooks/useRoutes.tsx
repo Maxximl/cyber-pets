@@ -9,6 +9,7 @@ import { AddDataPage } from "../AddDataPage";
 import { Camera } from "../Camera";
 import { Cameras } from "../Cameras";
 import { Content } from "../Content";
+import { Download } from "../Download";
 import { Header } from "../Header";
 import { AuthPage } from "../pages/AuthPage/AuthPage";
 import { Pets } from "../Pets";
@@ -27,6 +28,9 @@ export const useRoutes = (
         </Route>
         <Route path="/" exact>
           <Promo />
+        </Route>
+        <Route path="/report" exact>
+          <Download />
         </Route>
         <Route path="/pets" exact>
           <Pets />
@@ -51,6 +55,9 @@ export const useRoutes = (
         </Route>
         <Route path="/" exact>
           <Promo />
+        </Route>
+        <Route path="/report" exact>
+          <Download />
         </Route>
         <Route path="/pets" exact>
           <Pets />

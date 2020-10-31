@@ -3,8 +3,9 @@ import styles from "./Pets.module.css";
 import Table from "../Table";
 import { useHttp } from "../hooks/http.hook";
 import { Data } from "../Table/Table";
-import { Button } from "@material-ui/core";
+import { Button, InputLabel } from "@material-ui/core";
 import { AiOutlineArrowRight } from "react-icons/ai";
+import { Link } from "react-router-dom";
 
 export interface IBreed {
   id: number;
@@ -68,9 +69,38 @@ export const Pets = () => {
       console.log(error);
     }
   };
+  const download = (filename: string, blob: Blob) => {
+    var url = window.URL || window.webkitURL;
+    var downloadUrl = url.createObjectURL(blob);
+
+    var a = document.createElement("a");
+    a.style.display = "none";
+
+    // if (typeof a.download === "undefined") {
+    //    window.location = downloadUrl;
+    // } else {
+    a.href = downloadUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    // }
+  };
+
+  const downloadReport = async () => {
+    try {
+      fetch("/data/report")
+        .then((response) => response.blob())
+        .then((result) => {
+          download("doc.docx", result);
+        });
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className={styles.container}>
-      <Table data={data} />{" "}
       <div className={styles.buttonContainer}>
         <Button
           variant="contained"
@@ -80,6 +110,17 @@ export const Pets = () => {
         >
           <span>Сформирвать отчет</span>
         </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          className={styles.button}
+          onClick={downloadReport}
+        >
+          <span>Скачать отчет</span>
+        </Button>
+      </div>
+      <div className={styles.tableContainer}>
+        <Table data={data} />{" "}
       </div>
     </div>
   );

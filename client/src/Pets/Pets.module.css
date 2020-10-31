@@ -6,3 +6,11 @@
   display: flex;
   justify-content: center;
 }
+
+.tableContainer {
+  width: 90vw;
+}
+
+button {
+  margin-right: 20px;
+}

@@ -225,12 +225,6 @@ const headCells: HeadCell[] = [
     disablePadding: false,
     label: "Размер",
   },
-  {
-    id: "specialSigns",
-    numeric: false,
-    disablePadding: false,
-    label: "Дополнительная информация",
-  },
 ];
 
 interface EnhancedTableProps {
@@ -425,6 +419,7 @@ export default function EnhancedTable(props: { data: Data[] }) {
       shelterList,
       tailList,
       breedList,
+      sexTypes,
     },
   } = useContext(AuthContext);
   console.log("breedlist", breedList);
@@ -567,7 +562,9 @@ export default function EnhancedTable(props: { data: Data[] }) {
                         {petTypeList[row.petTypeId - 1]?.type}
                       </TableCell>
                       <TableCell align="right">{row.birhYear}</TableCell>
-                      {/* <TableCell align="right">{pet}</TableCell> */}
+                      <TableCell align="right">
+                        {sexTypes[row.sexTypeId - 1]?.sex}
+                      </TableCell>
                       <TableCell align="right">{row.weight}</TableCell>
                       <TableCell align="right">{row.aviary}</TableCell>
                       <TableCell align="right">
@@ -575,6 +572,18 @@ export default function EnhancedTable(props: { data: Data[] }) {
                       </TableCell>
                       <TableCell align="right">
                         {petColorTypes[row.petColorTypeId - 1]?.color}
+                      </TableCell>
+                      <TableCell align="right">
+                        {petEarsTypes[row.petEarsTypeId - 1]?.ears}
+                      </TableCell>
+                      <TableCell align="right">
+                        {petHairTypes[row.petHairTypeId - 1]?.hair}
+                      </TableCell>
+                      <TableCell align="right">
+                        {tailList[row.petTailTypeId - 1]?.tail}
+                      </TableCell>
+                      <TableCell align="right">
+                        {petSizes[row.petsSizeId - 1]?.size}
                       </TableCell>
                     </TableRow>
                   );

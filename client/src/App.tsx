@@ -48,10 +48,12 @@ export interface IData {
   petHairTypes: IHair[];
   petEarsTypes: IEars[];
   petSizes: ISizes[];
+  sexTypes: ISex[];
 }
 
 export interface ISex {
-  
+  id: number;
+  sex: string;
 }
 
 export const App = () => {
@@ -65,7 +67,7 @@ export const App = () => {
   const [petHairTypes, setPetHairTypes] = useState<IHair[]>([]);
   const [petEarsTypes, setPetEarsTypes] = useState<IEars[]>([]);
   const [petSizes, setPetSizes] = useState<ISizes[]>([]);
-  cosnt [sexTypes, setSexTypes] = useState<
+  const [sexTypes, setSexTypes] = useState<ISex[]>([]);
 
   const data = {
     breedList,
@@ -76,21 +78,18 @@ export const App = () => {
     petHairTypes,
     petEarsTypes,
     petSizes,
+    sexTypes,
   };
 
   const getData = async () => {
     try {
       const breed = await request("/data/breedList");
-      console.log("Data", breed.result);
       const shelter = await request("/data/shelterList");
       setBreedList(breed.result);
-      console.log("Data", shelter);
       setShelterList(shelter.result);
       const tail = await request("/data/tailList");
-      console.log(tail.result);
       setTailList(tail.result);
       const type = await request("/data/petTypeList");
-      console.log(type.result);
       setPetTypeList(type.result);
       const color = await request("/data/petColorTypes");
       setPetColorTypes(color.result);
@@ -100,6 +99,8 @@ export const App = () => {
       setPetEarsTypes(ears.result);
       const size = await request("/data/petsizes");
       setPetSizes(size.result);
+      const sex = await request("/data/petSexTypes");
+      setSexTypes(sex.result);
     } catch (error) {
       console.error(error);
     }
