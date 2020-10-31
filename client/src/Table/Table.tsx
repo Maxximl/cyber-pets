@@ -31,36 +31,41 @@ interface Data {
   name: string;
   weight: string;
   color: string;
+  number: string;
 }
 
 const data = [
   {
-    name: "Тузик",
+    name: "Тузик1",
     age: "10",
     type: "C",
     weight: "5",
     color: "Белый",
+    number: "0",
   },
   {
-    name: "Тузик",
+    name: "Тузик2",
     age: "10",
     type: "C",
     weight: "5",
     color: "Белый",
+    number: "1",
   },
   {
-    name: "Тузик",
+    name: "Тузик3",
     age: "10",
     type: "C",
     weight: "5",
     color: "Белый",
+    number: "2",
   },
   {
-    name: "Тузик",
+    name: "Тузик4",
     age: "10",
     type: "C",
     weight: "5",
     color: "Белый",
+    number: "3",
   },
 ];
 
@@ -69,13 +74,14 @@ function createData(
   age: string,
   type: string,
   weight: string,
-  color: string
+  color: string,
+  number: string
 ): Data {
-  return { name, age, type, weight, color };
+  return { name, age, type, weight, color, number };
 }
 
 const rows = data.map((d) =>
-  createData(d.name, d.age, d.type, d.weight, d.color)
+  createData(d.name, d.age, d.type, d.weight, d.color, d.number)
 );
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -121,7 +127,7 @@ interface HeadCell {
 
 const headCells: HeadCell[] = [
   {
-    id: "name",
+    id: "number",
     numeric: false,
     disablePadding: true,
     label: "Карточка учета животного №",

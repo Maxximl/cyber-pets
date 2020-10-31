@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useContext, useState } from "react";
+import React, { ChangeEvent, useContext, useEffect, useState } from "react";
 import Button from "@material-ui/core/Button/Button";
 import {
   TextField,
@@ -15,6 +15,7 @@ import { useAuth } from "../hooks/auth.hook";
 import { useHttp } from "../hooks/http.hook";
 import { useHistory } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { IBreed, IShelter } from "../Pets";
 
 export const AddDataPage = () => {
   const history = useHistory();
@@ -25,11 +26,41 @@ export const AddDataPage = () => {
     breed: "",
     age: "",
     description: "",
+    tail: "",
+    ears: "",
+    color: "",
+    wool: "",
   });
 
-  const { token } = useContext(AuthContext);
+  const [breedList, setBreedList] = useState<IBreed[]>([]);
+  const [shelterList, setShelterList] = useState<IShelter[]>([]);
+  const [searchedBreed, setSearchedBreed] = useState<string>("");
 
   const { request } = useHttp();
+
+  const getData = async () => {
+    try {
+      const breed = await request("/data/breedList");
+      console.log("Data", breed.result);
+      const shelter = await request("/data/shelterList");
+      setBreedList(breed.result);
+      console.log("Data", shelter);
+      setShelterList(shelter.result);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  // const menuItems = (<MenuItem>1</MenuItem>
+  //   <MenuItem>2</MenuItem>
+  //   <MenuItem>3</MenuItem>
+  //   )
+
+  const { token } = useContext(AuthContext);
 
   const handleOnSexChange = (
     event: React.ChangeEvent<{
@@ -112,6 +143,30 @@ export const AddDataPage = () => {
           </FormControl>
         </div>
         <div className={styles.inputContainer}>
+          <FormControl className={styles.dropdown}>
+            <InputLabel id="demo-simple-select-outlined-label" required>
+              Приют
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-outlined-label"
+              id="demo-simple-select-outlined"
+              label="Age"
+              required
+              name="shelter"
+              // onChange={handleOnSexChange}
+            >
+              {shelterList.map((shelter) => {
+                return (
+                  <MenuItem key={shelter.id} value={shelter.id}>
+                    {shelter.shortName}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+        </div>
+
+        <div className={styles.inputContainer}>
           <TextField
             className={styles.input}
             label="Вид"
@@ -135,24 +190,32 @@ export const AddDataPage = () => {
             onChange={changeHandler}
             name="age"
           />
+        </div>
+        <div className={styles.inputContainer}>
           <TextField
             className={styles.input}
             label="Окрас"
             onChange={changeHandler}
             name="color"
           />
+        </div>
+        <div className={styles.inputContainer}>
           <TextField
             className={styles.input}
             label="Шерсть"
             onChange={changeHandler}
             name="wool"
           />
+        </div>
+        <div className={styles.inputContainer}>
           <TextField
             className={styles.input}
             label="Уши"
             onChange={changeHandler}
             name="ears"
           />
+        </div>
+        <div className={styles.inputContainer}>
           <TextField
             className={styles.input}
             label="Хвост"
@@ -160,7 +223,8 @@ export const AddDataPage = () => {
             name="tail"
           />
         </div>
-        {/* {/* <div className={styles.textAreaContainer}>
+
+        <div className={styles.textAreaContainer}>
           <TextareaAutosize
             name="description"
             onChange={changeHandler}
@@ -168,27 +232,28 @@ export const AddDataPage = () => {
             rowsMax={10}
             placeholder="Введите описание"
           />
-        </div> */}
+        </div>
+        <div className={styles.buttonContainer}>
+          <Button
+            variant="contained"
+            color="primary"
+            className={styles.button}
+            onClick={addHandler}
+          >
+            <span>Сохранить</span>
+            <AiOutlineArrowRight className={styles.arrow_icon} />
+          </Button>
+        </div>
       </form>
-      {/* <div className={styles.buttonContainer}>
-        <Button
-          variant="contained"
-          color="primary"
-          className={styles.button}
-          onClick={addHandler}
-        >
-          <span>Сохранить</span>
-          <AiOutlineArrowRight className={styles.arrow_icon} />
-        </Button>
-      </div> */}
-      {/* <div className={styles.mobileFunctions}>
+
+      <div className={styles.mobileFunctions}>
         <div>
           <AiFillCamera />
         </div>
         <div className={styles.nfc}>
           <SiNfc />
         </div>
-      </div> */}
+      </div>
     </div>
   );
 };

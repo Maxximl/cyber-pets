@@ -7,6 +7,7 @@
   padding: 0 20px;
   box-sizing: border-box;
   align-items: center;
+  justify-content: flex-start;
 }
 
 form {
@@ -50,8 +51,8 @@ form {
 }
 
 .arrow_icon {
-  /* position: absolute;
-  right: 20px; */
+  position: absolute;
+  right: 20px;
 }
 
 .dropdown {

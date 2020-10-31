@@ -6,6 +6,8 @@ const path = require("path");
 // const database = require("./utils/dbConfig");
 // const db = require("./utils/datab");
 
+// let dataBase = require('./database.js')
+// let dtm = dataBase.initDB()
 const app = express();
 
 app.use(express.json({ extended: true }));
@@ -25,6 +27,7 @@ app.use(
 app.use("/api/auth", require("./routes/auth.routes"));
 app.use("/api/admin/pets", require("./routes/admin.routes"));
 app.use("/api/pets", require("./routes/pets.routes"));
+app.use("/data", require("./routes/tables.routes"));
 
 if (process.env.NODE_ENV === "production") {
   app.use("/", express.static(path.join(__dirname, "client", "public")));
@@ -37,7 +40,7 @@ const PORT = config.get("port") || 5000;
 
 async function start() {
   try {
-    await sequelize.sync();
+    // await sequelize.sync();
     // db.then((client) => {
     //   client.query("SELECT * FROM `pets`", function (err, results, fields) {
     //     if (err) throw err;
