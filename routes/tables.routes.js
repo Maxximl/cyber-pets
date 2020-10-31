@@ -198,15 +198,15 @@ router.get("/petSexTypes", (request, response) => {
 // });
 
 router.get("/report", function (req, res) {
-  var file = "C:\\tst\\generated.docx";
+  const file = "C:\\tst\\generated.docx";
 
-  var filename = path.basename(file);
-  var mimetype = mime.lookup(file);
+  const filename = path.basename(file);
+  const mimetype = mime.lookup(file);
 
   res.setHeader("Content-disposition", "attachment; filename=" + filename);
   res.setHeader("Content-type", mimetype);
 
-  var filestream = fs.createReadStream(file);
+  const filestream = fs.createReadStream(file);
   filestream.pipe(res);
 });
 
