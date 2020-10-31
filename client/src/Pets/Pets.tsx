@@ -3,6 +3,8 @@ import styles from "./Pets.module.css";
 import Table from "../Table";
 import { useHttp } from "../hooks/http.hook";
 import { Data } from "../Table/Table";
+import { Button } from "@material-ui/core";
+import { AiOutlineArrowRight } from "react-icons/ai";
 
 export interface IBreed {
   id: number;
@@ -35,7 +37,7 @@ export const Pets = () => {
     };
 
     try {
-      const data = await request(`data/filter`, "POST", obj);
+      const data = await request(`data/filter`, "POST");
       setData(data.result || []);
       console.log(data.result);
     } catch (error) {
@@ -47,10 +49,38 @@ export const Pets = () => {
     setFilter();
   }, []);
 
+  // cosnt reportHandler = () => {
+
+  // }
+
+  const exportWord = () => {
+    const obj = {
+      id: 1,
+    };
+
+    var raw = JSON.stringify(obj);
+
+    try {
+      const data = request("/data/exportToWord", "PUT", obj);
+
+      console.log("response status", data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className={styles.container}>
-      Петы
       <Table data={data} />{" "}
+      <div className={styles.buttonContainer}>
+        <Button
+          variant="contained"
+          color="primary"
+          className={styles.button}
+          onClick={exportWord}
+        >
+          <span>Сформирвать отчет</span>
+        </Button>
+      </div>
     </div>
   );
 };

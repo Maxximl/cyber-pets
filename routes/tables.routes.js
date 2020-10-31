@@ -3,7 +3,7 @@ const router = Router();
 
 let dataBase = require("../utils/database");
 let dtm = dataBase.initDB();
-
+let exportToWord = require("./exportWord.js").exportToWord;
 //карточка собаки
 router.get("/pet/:petId", (request, response) => {
   console.log("petCard");
@@ -87,6 +87,34 @@ router.get("/petsByShelter/:shelterId", (request, response) => {
     });
 });
 
+//список хвостов
+router.get("/tailList", (request, response) => {
+  dtm
+    .readValue("petTailTypes")
+    .then((rows) => {
+      if (rows.length !== 0) {
+        response.send({ result: rows });
+      }
+    })
+    .catch((errpor) => {
+      response.send({ code: 400, message: "Ошибка выполнения запроса" });
+    });
+});
+
+//список типов животных
+router.get("/petTypeList", (request, response) => {
+  dtm
+    .readValue("petTypes")
+    .then((rows) => {
+      if (rows.length !== 0) {
+        response.send({ result: rows });
+      }
+    })
+    .catch((errpor) => {
+      response.send({ code: 400, message: "Ошибка выполнения запроса" });
+    });
+});
+
 //Заявка
 router.post("/createRequest", (request, response) => {
   dtm.createRequest(request.body);
@@ -97,7 +125,7 @@ router.post("/createRequest", (request, response) => {
 router.post("/filter", (request, response) => {
   let sql = "";
   console.log(request.body);
-  if (request.body) {
+  if (Object.entries(request.body).length) {
     sql = " WHERE ";
 
     if (request.body.nickName) sql += `nickName = ${request.body.nickName} AND`;
@@ -121,6 +149,48 @@ router.post("/filter", (request, response) => {
           code: 401,
           message: "Нет подходящих животных. Попробуйте изменить фильтр поиска",
         });
+      }
+    })
+    .catch((errpor) => {
+      response.send({ code: 400, message: "Ошибка выполнения запроса" });
+    });
+});
+
+// Создание ворд документа
+router.put("/exportToWord", (request, response) => {
+  const { id } = request.body;
+  const sql = `INNER JOIN
+       Pets ON Pets.id = responsible.id
+       INNER JOIN
+       Shelters ON Shelters.id = responsible.id
+       INNER JOIN
+       BreedTypes ON BreedTypes.id = Pets.breedTypeId
+       INNER JOIN
+       SexTypes ON SexTypes.id = Pets.sexTypeId
+       LEFT JOIN
+       PetColorTypes ON PetColorTypes.id = Pets.petColorTypeId
+       LEFT JOIN
+       PetEarsTypes ON PetEarsTypes.id = Pets.petEarsTypeId
+       LEFT JOIN
+       PetHairTypes ON PetHairTypes.id = Pets.petHairTypeId
+       LEFT JOIN
+       PetsSizes ON PetsSizes.id = Pets.petsSizeId
+       LEFT JOIN
+       PetAddInfo ON PetAddInfo.petId = Pets.id
+       LEFT JOIN
+       PetTailTypes ON PetTailTypes.id = Pets.petTailTypeId
+ WHERE responsible.petId = ${id};`;
+
+  console.log(`id ${id}`);
+  dtm
+    .readValue("responsible", sql)
+    .then((rows) => {
+      if (rows.length !== 0) {
+        console.log("rows", rows);
+        exportToWord({ ...rows[0], age: "12" });
+        response.send({ result: "Ok" });
+      } else {
+        response.send({ code: 401, message: "Животное не найдено" });
       }
     })
     .catch((errpor) => {

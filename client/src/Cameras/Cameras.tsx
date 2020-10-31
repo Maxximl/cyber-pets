@@ -11,7 +11,6 @@ export const Cameras = () => {
     petType: string;
   }
   const { petType } = useParams<paramTypes>();
-  debugger;
   let currentPets: string[];
   if (petType === "dogs") {
     currentPets = dogs;

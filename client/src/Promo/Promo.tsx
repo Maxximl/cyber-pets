@@ -7,10 +7,11 @@ import dogPhoto from "./img/dogs.jpg";
 import catPhoto from "./img/cats.jpg";
 import dogs2 from "./img/dogs2.jpeg";
 import EnhancedTable from "../Table/Table";
+import VirusMap from "../VirusMap";
 
 export const Promo = () => {
   const slider = (
-    <AwesomeSlider style={{ height: "100%" }}>
+    <AwesomeSlider style={{ height: "80%" }}>
       <div data-src={dogPhoto} />
       <div data-src={catPhoto} />
       <div data-src={dogs2} />
@@ -20,6 +21,7 @@ export const Promo = () => {
   return (
     <div className={styles.promo}>
       <div className={styles.slider}>{slider}</div>
+      <VirusMap />
     </div>
   );
 };

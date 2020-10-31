@@ -252,7 +252,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
           id="tableTitle"
           component="div"
         >
-          Nutrition
+          Таблица питомцев
         </Typography>
       )}
       {numSelected > 0 ? (

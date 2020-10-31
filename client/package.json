@@ -19,6 +19,7 @@
     "react-icons": "^3.11.0",
     "react-iframe": "^1.8.0",
     "react-input-mask": "^2.0.4",
+    "react-map-gl": "^5.2.9",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3"
   },

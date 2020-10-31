@@ -16,6 +16,15 @@ import { useHttp } from "../hooks/http.hook";
 import { useHistory } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { IBreed, IShelter } from "../Pets";
+export interface ITail {
+  id: number;
+  tail: string;
+}
+
+export interface IPetType {
+  id: number;
+  type: string;
+}
 
 export const AddDataPage = () => {
   const history = useHistory();
@@ -34,6 +43,8 @@ export const AddDataPage = () => {
 
   const [breedList, setBreedList] = useState<IBreed[]>([]);
   const [shelterList, setShelterList] = useState<IShelter[]>([]);
+  const [tailList, setTailList] = useState<ITail[]>([]);
+  const [petTypeList, setPetTypeList] = useState<IPetType[]>([]);
   const [searchedBreed, setSearchedBreed] = useState<string>("");
 
   const { request } = useHttp();
@@ -46,6 +57,12 @@ export const AddDataPage = () => {
       setBreedList(breed.result);
       console.log("Data", shelter);
       setShelterList(shelter.result);
+      const tail = await request("/data/tailList");
+      console.log(tail.result);
+      setTailList(tail.result);
+      const type = await request("/data/petTypeList");
+      console.log(type.result);
+      setPetTypeList(type.result);
     } catch (error) {
       console.error(error);
     }
@@ -54,11 +71,6 @@ export const AddDataPage = () => {
   useEffect(() => {
     getData();
   }, []);
-
-  // const menuItems = (<MenuItem>1</MenuItem>
-  //   <MenuItem>2</MenuItem>
-  //   <MenuItem>3</MenuItem>
-  //   )
 
   const { token } = useContext(AuthContext);
 
@@ -69,7 +81,6 @@ export const AddDataPage = () => {
     }>,
     child: React.ReactNode
   ) => {
-    debugger;
     setForm({
       ...form,
       [event.target.name as string]: event.target.value,
@@ -190,21 +201,50 @@ export const AddDataPage = () => {
           </FormControl>
         </div>
         <div className={styles.inputContainer}>
-          <TextField
-            className={styles.input}
-            label="Вид"
-            required
-            onChange={changeHandler}
-            name="type"
-          />
+          <FormControl className={styles.dropdown}>
+            <InputLabel id="demo-simple-select-outlined-label" required>
+              Хвост
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-outlined-label"
+              id="demo-simple-select-outlined"
+              label="Age"
+              required
+              name="shelter"
+              // onChange={handleOnSexChange}
+            >
+              {tailList.map((tail) => {
+                return (
+                  <MenuItem key={tail.id} value={tail.id}>
+                    {tail.tail}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
         </div>
         <div className={styles.inputContainer}>
-          <TextField
-            className={styles.input}
-            label="Порода"
-            onChange={changeHandler}
-            name="breed"
-          />
+          <FormControl className={styles.dropdown}>
+            <InputLabel id="demo-simple-select-outlined-label" required>
+              Вид
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-outlined-label"
+              id="demo-simple-select-outlined"
+              label="Age"
+              required
+              name="shelter"
+              // onChange={handleOnSexChange}
+            >
+              {petTypeList.map((type) => {
+                return (
+                  <MenuItem key={type.id} value={type.id}>
+                    {type.type}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
         </div>
         <div className={styles.inputContainer}>
           <TextField
@@ -238,15 +278,6 @@ export const AddDataPage = () => {
             name="ears"
           />
         </div>
-        <div className={styles.inputContainer}>
-          <TextField
-            className={styles.input}
-            label="Хвост"
-            onChange={changeHandler}
-            name="tail"
-          />
-        </div>
-
         <div className={styles.textAreaContainer}>
           <TextareaAutosize
             name="description"
