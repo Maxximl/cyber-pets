@@ -37,13 +37,13 @@ export const Pets = () => {
 
   const exportWord = () => {
     const obj = {
-      id: 1,
+      id: shelterValue,
     };
 
     var raw = JSON.stringify(obj);
 
     try {
-      const data = request("/data/exportToWord", "PUT", obj);
+      const data = request(`/data/exportSvodToWord/${shelterValue}`, "PUT");
     } catch (error) {
       console.log(error);
     }
@@ -67,7 +67,7 @@ export const Pets = () => {
 
   const downloadReport = async () => {
     try {
-      fetch("/data/report")
+      fetch("/data/svod")
         .then((response) => response.blob())
         .then((result) => {
           download("Report.docx", result);
