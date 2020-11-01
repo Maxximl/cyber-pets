@@ -210,16 +210,35 @@ router.get("/petSexTypes", (request, response) => {
 // });
 
 router.get("/report", function (req, res) {
-  const file = "./files/generated.docx";
+  const file = "C:\\tst\\generated.docx";
+  if (fs.existsSync(file)) {
+    const filename = path.basename(file);
+    const mimetype = mime.lookup(file);
 
-  const filename = path.basename(file);
-  const mimetype = mime.lookup(file);
+    res.setHeader("Content-disposition", "attachment; filename=" + filename);
+    res.setHeader("Content-type", mimetype);
 
-  res.setHeader("Content-disposition", "attachment; filename=" + filename);
-  res.setHeader("Content-type", mimetype);
+    const filestream = fs.createReadStream(file);
+    filestream.pipe(res);
+  } else {
+    res.send({ code: 400, message: "Ошибка выполнения запроса" });
+  }
+});
 
-  const filestream = fs.createReadStream(file);
-  filestream.pipe(res);
+router.get("/svod", function (req, res) {
+  const file = "C:\\tst\\generated_svod.docx";
+  if (fs.existsSync(file)) {
+    const filename = path.basename(file);
+    const mimetype = mime.lookup(file);
+
+    res.setHeader("Content-disposition", "attachment; filename=" + filename);
+    res.setHeader("Content-type", mimetype);
+
+    const filestream = fs.createReadStream(file);
+    filestream.pipe(res);
+  } else {
+    res.send({ code: 400, message: "Ошибка выполнения запроса" });
+  }
 });
 
 // Собаки по приюту
@@ -283,6 +302,55 @@ router.post("/filter", (request, response) => {
       }
     })
     .catch((errpor) => {
+      response.send({ code: 400, message: "Ошибка выполнения запроса" });
+    });
+});
+
+router.put("/exportSvodToWord/:shelterId", (request, response) => {
+  dtm
+    .readValue(
+      "responsible",
+      ` INNER JOIN Pets 
+									ON responsible.petId = Pets.id
+									LEFT JOIN
+									PetAddInfo ON PetAddInfo.petId = Pets.id
+									INNER JOIN
+									SexTypes ON SexTypes.id = Pets.sexTypeId
+									LEFT JOIN 
+									PetTransfers ON PetTransfers.petId = Pets.id
+									WHERE shelterId = ${request.params.shelterId}`
+    )
+    .then((petsRows) => {
+      dtm
+        .readValue("Shelters", ` WHERE id = ${request.params.shelterId}`)
+        .then((shelts) => {
+          const info = {
+            shelter: {
+              ...shelts[0],
+              operatingOrganizationId: petsRows[0].operatingOrganizationId,
+            },
+            pets: petsRows.map((p) => {
+              return {
+                cardId: p.cardId,
+                nickName: p.nickName,
+                petType: "Собака",
+                sex: p.sex,
+                identificationMark: p.identificationMark,
+                receiptDate: p.receiptDate,
+              };
+            }),
+          };
+
+          exportToWord.exportSvod(info);
+          response.send({ result: "Ok" });
+        })
+        .catch((error) => {
+          console.log("Error", error);
+          response.send({ code: 400, message: "Ошибка выполнения запроса" });
+        });
+    })
+    .catch((error) => {
+      console.log("ошибка запроса к БД", error);
       response.send({ code: 400, message: "Ошибка выполнения запроса" });
     });
 });

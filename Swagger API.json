@@ -1,0 +1,247 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "API для внешних севисов",
+    "version": "1.0.0",
+    "title": "API для внешних севисов",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "virtserver.swaggerhub.com",
+  "basePath": "/Stranger1989/PetsHome/1.0.0",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/createRequest": {
+      "post": {
+        "summary": "Взять собаку из приюта",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "petId": {
+                  "type": "integer",
+                  "example": 123001,
+                  "description": "Идентификатор животного"
+                },
+                "shelterId": {
+                  "type": "integer",
+                  "example": 123,
+                  "description": "Идентификатор приюта"
+                },
+                "visitDate": {
+                  "type": "string",
+                  "example": "01-11-2020",
+                  "description": "Предполагаемая дата визита"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "79161232233",
+                  "description": "телефон для обратной связи"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Запрос успешн осоздан"
+          },
+          "400": {
+            "description": "Ошибка, переданы не валидные данные"
+          }
+        }
+      }
+    },
+    "/filter": {
+      "post": {
+        "description": "Метод возвращает список собак в соответствии с фильтром",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "breedId": {
+                  "type": "integer",
+                  "example": 777,
+                  "description": "Порода собаки"
+                },
+                "shelterId": {
+                  "type": "integer",
+                  "example": 123,
+                  "description": "Идентификатор приюта"
+                },
+                "gender": {
+                  "type": "string",
+                  "example": "m",
+                  "description": "Пол собаки"
+                },
+                "size": {
+                  "type": "integer",
+                  "example": 0,
+                  "description": "Размер собаки"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Список собак согласно фильтру"
+          },
+          "400": {
+            "description": "Ошибка, переданы не валидные данные"
+          },
+          "401": {
+            "description": "Нет подходящих животных. Попробуйте изменить фильтр поиска"
+          }
+        }
+      }
+    },
+    "/breedList": {
+      "get": {
+        "summary": "Список пород собак",
+        "description": "Метод возвращает список пород собак",
+        "operationId": "findPetsBreed",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Список пород собак"
+          },
+          "400": {
+            "description": "Ошибка при выполнении запроса"
+          }
+        }
+      }
+    },
+    "/shelterList": {
+      "get": {
+        "summary": "Список приютов",
+        "description": "Метод возвращает список приютов",
+        "operationId": "findShelter",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Список приютов"
+          },
+          "400": {
+            "description": "Ошибка при выполнении запроса"
+          }
+        }
+      }
+    },
+    "/pet/{petId}": {
+      "get": {
+        "summary": "Карточка животного",
+        "description": "Детальная информация о животном",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "petId",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Карточка животного",
+            "schema": {
+              "$ref": "#/definitions/PetCard"
+            }
+          },
+          "400": {
+            "description": "Ошибка при выполнении запроса"
+          }
+        }
+      }
+    },
+    "/shelter/{shelterId}": {
+      "get": {
+        "summary": "Информация о приюте",
+        "description": "Информация о приюте",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "shelterId",
+            "in": "path",
+            "description": "id приюта",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Инфоромация о приюте"
+          },
+          "400": {
+            "description": "Ошибка при выполнении запроса"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "PetCard": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Кличка живтоного"
+        },
+        "age": {
+          "type": "integer",
+          "description": "Возраст"
+        },
+        "gender": {
+          "type": "string",
+          "description": "Пол"
+        },
+        "breed": {
+          "type": "string",
+          "description": "Порода"
+        },
+        "weight": {
+          "type": "integer",
+          "description": "Вес"
+        },
+        "shelterId": {
+          "description": "Идентификатор приюта"
+        }
+      },
+      "description": "Карточка животного"
+    }
+  }
+}
