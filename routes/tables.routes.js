@@ -10,8 +10,33 @@ let exportToWord = require("./exportWord.js").exportToWord;
 //карточка собаки
 router.get("/pet/:petId", (request, response) => {
   console.log("petCard");
+  const sql = `INNER JOIN
+       Pets ON Pets.id = responsible.id
+       LEFT JOIN
+       Shelters ON Shelters.id = responsible.shelterId
+       LEFT JOIN
+       BreedTypes ON BreedTypes.id = Pets.breedTypeId
+       LEFT JOIN
+       SexTypes ON SexTypes.id = Pets.sexTypeId
+       LEFT JOIN
+       PetColorTypes ON PetColorTypes.id = Pets.petColorTypeId
+       LEFT JOIN
+       PetEarsTypes ON PetEarsTypes.id = Pets.petEarsTypeId
+       LEFT JOIN
+       PetHairTypes ON PetHairTypes.id = Pets.petHairTypeId
+       LEFT JOIN
+       PetsSizes ON PetsSizes.id = Pets.petsSizeId
+       LEFT JOIN
+       PetAddInfo ON PetAddInfo.petId = Pets.id
+       LEFT JOIN
+       PetTailTypes ON PetTailTypes.id = Pets.petTailTypeId
+	   LEFT JOIN 
+       CatchInfo ON CatchInfo.petId = Pets.id
+	   LEFT JOIN 
+       PetTransfers ON PetTransfers.petId = Pets.id
+ WHERE responsible.petId = ${request.params.petId};`;
   dtm
-    .readValue("pet")
+    .readValue("responsible", sql)
     .then((rows) => {
       if (rows.length !== 0) {
         response.send({ result: rows });
@@ -63,26 +88,6 @@ router.get("/shelter/:shelterId", (request, response) => {
     .then((rows) => {
       if (rows.length !== 0) {
         response.send({ result: rows });
-      }
-    })
-    .catch((errpor) => {
-      response.send({ code: 400, message: "Ошибка выполнения запроса" });
-    });
-});
-
-// Собаки по приюту
-router.get("/petsByShelter/:shelterId", (request, response) => {
-  console.log("pets");
-  dtm
-    .readValue("responsible", ` WHERE shelterId = ${request.params.shelterId}`)
-    .then((rows) => {
-      if (rows.length !== 0) {
-        response.send({ result: rows });
-      } else {
-        response.send({
-          code: 401,
-          message: "В приюте нет собак готовых к социализации",
-        });
       }
     })
     .catch((errpor) => {
@@ -210,6 +215,31 @@ router.get("/report", function (req, res) {
   filestream.pipe(res);
 });
 
+// Собаки по приюту
+router.get("/petsByShelter/:shelterId", (request, response) => {
+  console.log("pets");
+  dtm
+    .readValue(
+      "responsible",
+      ` INNER JOIN Pets 
+									ON responsible.petId = Pets.id
+									WHERE shelterId = ${request.params.shelterId}`
+    )
+    .then((rows) => {
+      if (rows.length !== 0) {
+        response.send({ result: rows });
+      } else {
+        response.send({
+          code: 401,
+          message: "В приюте нет собак готовых к социализации",
+        });
+      }
+    })
+    .catch((errpor) => {
+      response.send({ code: 400, message: "Ошибка выполнения запроса" });
+    });
+});
+
 //Заявка
 router.post("/createRequest", (request, response) => {
   dtm.createRequest(request.body);
@@ -257,7 +287,7 @@ router.put("/exportToWord", (request, response) => {
   const sql = `INNER JOIN
        Pets ON Pets.id = responsible.id
        INNER JOIN
-       Shelters ON Shelters.id = responsible.id
+       Shelters ON Shelters.id = responsible.shelterId
        INNER JOIN
        BreedTypes ON BreedTypes.id = Pets.breedTypeId
        INNER JOIN

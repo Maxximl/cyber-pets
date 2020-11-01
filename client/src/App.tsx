@@ -125,7 +125,7 @@ export const App = () => {
     };
 
     try {
-      const dataset = await request(`data/filter`, "POST");
+      const dataset = await request(`/data/petsByShelter/1`);
       setDataset(dataset.result || []);
       console.log(dataset.result);
     } catch (error) {
