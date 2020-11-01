@@ -53,6 +53,13 @@ router.put("/pet/:petId/exportWord", (request, response) => {
   console.log("exportWord");
 });
 
+router.post("/pet", (request, response) => {
+  const { body } = request;
+  console.log("body:", body);
+  dtm.addPet(body);
+  response.send({ result: "Ok" });
+});
+
 //список пород
 router.get("/breedList", (request, response) => {
   dtm

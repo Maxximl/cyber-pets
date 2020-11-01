@@ -27,6 +27,29 @@ class OfflineDataManager {
       });
     });
   }
+
+  addPet({ nickName, shelterId, sexTypeId, petsSizeId, breedTypeId }) {
+    this.db.serialize(() => {
+      let stmt = this.db.prepare(
+        "INSERT INTO Pets (nickName, sexTypeId, petsSizeId, breedTypeId) VALUES (?,?,?,?)"
+      );
+      stmt.run(nickName, sexTypeId, petsSizeId, breedTypeId);
+      stmt.finalize();
+      this.db.all("SELECT MAX(id) as petId FROM Pets", [], (err, rows) => {
+        if (err) {
+          console.log("Error", err);
+          throw new Error("Error");
+        }
+        const { petId } = rows[0];
+        console.log("Max index = ", petId);
+        let respPrepare = this.db.prepare(
+          "INSERT INTO responsible (petId,shelterId,operatingOrganizationId,animalCareWorkerFio) VALUES (?,?,?,?)"
+        );
+        respPrepare.run(petId, shelterId, "", "");
+        respPrepare.finalize();
+      });
+    });
+  }
 }
 
 exports.initDB = () => new OfflineDataManager();

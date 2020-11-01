@@ -50,16 +50,16 @@ export interface ISizes {
 export const AddDataPage = () => {
   const history = useHistory();
   const [form, setForm] = useState({
-    name: "",
-    sex: "",
-    type: "",
-    breed: "",
-    age: "",
-    description: "",
-    tail: "",
-    ears: "",
-    color: "",
-    wool: "",
+    nickName: "",
+    sexTypeId: "",
+    petsSizeId: "",
+    breedTypeId: "",
+    // age: "",
+    // description: "",
+    // tail: "",
+    // ears: "",
+    // color: "",
+    // wool: "",
   });
 
   const { request } = useHttp();
@@ -103,15 +103,15 @@ export const AddDataPage = () => {
     event.preventDefault();
     try {
       const data = await request(
-        "/api/admin/pets/add",
+        "/data/pet",
         "POST",
         {
-          name: form.name,
-          sex: form.sex,
-          type: form.type,
-          breed: form.breed,
-          age: form.age,
-          description: form.description,
+          nickName: form.nickName,
+          sexTypeId: form.sexTypeId,
+          petsSizeId: form.petsSizeId,
+          breedTypeId: form.breedTypeId,
+          // age: form.age,
+          // description: form.description,
         },
         { Authorization: `Bearer ${token}` }
       );
@@ -130,7 +130,7 @@ export const AddDataPage = () => {
           <TextField
             className={styles.input}
             label="Кличка"
-            name="name"
+            name="nickName"
             required
             onChange={changeHandler}
           />
@@ -153,9 +153,9 @@ export const AddDataPage = () => {
               id="demo-simple-select-outlined"
               label="Age"
               required
-              name="sex"
+              name="sexTypeId"
               onChange={handleOnSexChange}
-              value={form.sex}
+              value={form.sexTypeId}
             >
               <MenuItem value="">
                 <em>Не выбрано</em>
