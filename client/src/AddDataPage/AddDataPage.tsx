@@ -75,6 +75,7 @@ export const AddDataPage = () => {
       shelterList,
       tailList,
       breedList,
+      sexTypes,
     },
   } = useContext(AuthContext);
 
@@ -157,11 +158,13 @@ export const AddDataPage = () => {
               onChange={handleOnSexChange}
               value={form.sexTypeId}
             >
-              <MenuItem value="">
-                <em>Не выбрано</em>
-              </MenuItem>
-              <MenuItem value={"М"}>М</MenuItem>
-              <MenuItem value={"Ж"}>Ж</MenuItem>
+              {sexTypes.map((sex) => {
+                return (
+                  <MenuItem key={sex.id} value={sex.id}>
+                    {sex.sex}
+                  </MenuItem>
+                );
+              })}
             </Select>
           </FormControl>
         </div>

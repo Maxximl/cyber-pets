@@ -210,7 +210,7 @@ router.get("/petSexTypes", (request, response) => {
 // });
 
 router.get("/report", function (req, res) {
-  const file = "C:\\tst\\generated.docx";
+  const file = "./files/generated.docx";
 
   const filename = path.basename(file);
   const mimetype = mime.lookup(file);

@@ -64,21 +64,6 @@ export interface IPet {
 type IPetPartial = Partial<IPet>;
 
 export const PetCard = () => {
-  //   const {
-  //     data: {
-  //       petColorTypes,
-  //       petEarsTypes,
-  //       petHairTypes,
-  //       petSizes,
-  //       petTypeList,
-  //       shelterList,
-  //       tailList,
-  //       breedList,
-  //       sexTypes,
-  //     },
-  //     dataset,
-  //   } = useContext(AuthContext);
-
   const { id } = useParams<IParam>();
   const { request } = useHttp();
 
@@ -95,7 +80,7 @@ export const PetCard = () => {
 
   const exportWord = () => {
     const obj = {
-      id: 1,
+      id,
     };
 
     var raw = JSON.stringify(obj);
@@ -129,7 +114,7 @@ export const PetCard = () => {
       fetch("/data/report")
         .then((response) => response.blob())
         .then((result) => {
-          download("Report.docx", result);
+          download("Card.docx", result);
         });
     } catch (error) {
       console.log(error);

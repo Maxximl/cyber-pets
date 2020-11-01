@@ -1,6 +1,6 @@
 var spawn = require("child_process").spawn;
 
-exports.exportToWord = (dogInfo) => {
+exports.exportPetCard = (dogInfo) => {
 	/*var dogInfo = {
 		cardNum : '124',
 		 shelter : 'Приют №2',
@@ -20,7 +20,7 @@ exports.exportToWord = (dogInfo) => {
 
 	var arg = JSON.stringify(dogInfo);
 	console.log('arg len : ',arg.length)
-	var process = spawn('python',['C:\\tst\\main.py',arg]);
+	var process = spawn('python',['./main.py',arg]);
 
 	process.stdout.on('data', (data)=>{
 			console.log(data.toString());	
@@ -28,4 +28,14 @@ exports.exportToWord = (dogInfo) => {
 
 }
 
+
+exports.exportSvod = (info)=>{
+	var arg = JSON.stringify(info);
+	console.log('arg len : ',arg.length)
+	var process = spawn('python',['./exportSvod.py',arg]);
+
+	process.stdout.on('data', (data)=>{
+			console.log(data.toString());	
+	})
+}
 
