@@ -6,7 +6,8 @@ import { useParams } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { useHttp } from "../hooks/http.hook";
 import styles from "./PetCard.module.css";
-import image from "./img/2.jpg";
+import dogPhoto from "./img/2.jpg";
+import catPhoto from "./img/1.jpg";
 
 export interface IParam {
   id: string;
@@ -87,9 +88,51 @@ export const PetCard = () => {
       if (pet.result && pet.result[0]) {
         setPet(pet.result[0]);
       }
-      console.log(pet.result);
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const exportWord = () => {
+    const obj = {
+      id: 1,
+    };
+
+    var raw = JSON.stringify(obj);
+
+    try {
+      const data = request("/data/exportToWord", "PUT", obj);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const download = (filename: string, blob: Blob) => {
+    var url = window.URL || window.webkitURL;
+    var downloadUrl = url.createObjectURL(blob);
+
+    var a = document.createElement("a");
+    a.style.display = "none";
+
+    // if (typeof a.download === "undefined") {
+    //    window.location = downloadUrl;
+    // } else {
+    a.href = downloadUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    // }
+  };
+
+  const downloadReport = async () => {
+    try {
+      fetch("/data/report")
+        .then((response) => response.blob())
+        .then((result) => {
+          download("Report.docx", result);
+        });
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -105,7 +148,18 @@ export const PetCard = () => {
     `Эксплуатирующая организация: ${pet?.operatingOrganizationId || null}`,
   ];
 
-  const rowsExtra = [`${pet?.petTypeId === 2 ? "Собака" : "Кошка"}`];
+  const rowsExtra = [
+    `${pet?.petTypeId === 2 ? "Собака" : "Кошка"}`,
+    `Кличка: ${pet?.nickName}`,
+    `Год рождения: ${pet?.birhYear}`,
+    `Пол: ${pet?.sex}`,
+    `Порода: ${pet?.breed}`,
+    `Окрас: ${pet?.color}`,
+    `Шерсть: ${pet?.hair}`,
+    `Уши: ${pet?.ears}`,
+    `Хвост: ${pet?.tail}`,
+    `Размер: ${pet?.size}`,
+  ];
 
   return (
     <div className={styles.container}>
@@ -117,12 +171,19 @@ export const PetCard = () => {
       <div className={styles.content}>
         <div className={styles.miniContainer}>
           <div className={styles.photo}>
-            <img src={image} alt="photo" />
+            <img src={pet?.petTypeId === 2 ? dogPhoto : catPhoto} alt="photo" />
           </div>
           <div className={styles.description}>
-            {rowsExtra.map((row) => (
-              <div>{row}</div>
-            ))}
+            {rowsExtra.map((row) => {
+              const rowFirst = row.split(" ");
+
+              return (
+                <div className={styles.row}>
+                  <span className={styles.boldSpan}>{`${rowFirst[0]}`}</span>
+                  {`   ${rowFirst[1] || ""}`}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -132,7 +193,7 @@ export const PetCard = () => {
             variant="contained"
             color="primary"
             className={styles.button}
-            //   onClick={exportWord}
+            onClick={exportWord}
           >
             <span>Сформирвать отчет</span>
           </Button>
@@ -140,7 +201,7 @@ export const PetCard = () => {
             variant="contained"
             color="secondary"
             className={styles.button}
-            //   onClick={downloadReport}
+            onClick={downloadReport}
           >
             <span>Скачать отчет</span>
           </Button>

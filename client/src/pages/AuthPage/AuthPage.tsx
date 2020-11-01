@@ -54,7 +54,6 @@ export const AuthPage = () => {
   const classes = useStyles();
   const { loading, error, request, clearError } = useHttp();
   const { login } = useContext(AuthContext);
-  console.log("authpage ready!");
 
   const registerHandler = async () => {
     try {

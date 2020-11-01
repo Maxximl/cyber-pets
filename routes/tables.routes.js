@@ -217,7 +217,6 @@ router.get("/report", function (req, res) {
 
 // Собаки по приюту
 router.get("/petsByShelter/:shelterId", (request, response) => {
-  console.log("pets");
   dtm
     .readValue(
       "responsible",

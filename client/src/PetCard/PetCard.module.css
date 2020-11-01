@@ -6,11 +6,20 @@
   margin-top: 15px;
 }
 img {
-  margin-top: 20px;
   width: 300px;
 }
 
 .miniContainer {
   display: flex;
   justify-content: space-between;
+  margin-top: 20px;
+}
+.boldSpan {
+  font-weight: bold;
+}
+
+.buttonContainer {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-around;
 }

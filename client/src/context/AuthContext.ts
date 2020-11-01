@@ -11,7 +11,9 @@ interface IContext {
     dogs: string[],
     cats: string[],
     data: IData,
-    dataset: Data[]
+    dataset: Data[],
+    shelterValue: number,
+    setShelterValue: (value: React.SetStateAction<number>) => void
 }
 
 function noop() { }
@@ -24,5 +26,7 @@ export const AuthContext = createContext<IContext>({
     dogs: [],
     cats: [],
     data: { tailList: [], breedList: [], shelterList: [], petColorTypes: [], petEarsTypes: [], petHairTypes: [], petSizes: [], petTypeList: [], sexTypes: [] },
-    dataset: []
+    dataset: [],
+    shelterValue: 1,
+    setShelterValue: (value: React.SetStateAction<number>) => { }
 });

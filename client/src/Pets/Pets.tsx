@@ -3,7 +3,13 @@ import styles from "./Pets.module.css";
 import Table from "../Table";
 import { useHttp } from "../hooks/http.hook";
 import { Data } from "../Table/Table";
-import { Button, InputLabel } from "@material-ui/core";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@material-ui/core";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
@@ -24,7 +30,9 @@ export interface IShelter {
 }
 
 export const Pets = () => {
-  const { dataset } = useContext(AuthContext);
+  const { dataset, data, shelterValue, setShelterValue } = useContext(
+    AuthContext
+  );
   const { request } = useHttp();
 
   const exportWord = () => {
@@ -36,8 +44,6 @@ export const Pets = () => {
 
     try {
       const data = request("/data/exportToWord", "PUT", obj);
-
-      console.log("response status", data);
     } catch (error) {
       console.log(error);
     }
@@ -64,16 +70,47 @@ export const Pets = () => {
       fetch("/data/report")
         .then((response) => response.blob())
         .then((result) => {
-          download("doc.docx", result);
+          download("Report.docx", result);
         });
-      console.log(dataset);
     } catch (error) {
       console.log(error);
     }
   };
 
+  const handleOnShelterChange = (
+    event: React.ChangeEvent<{
+      name?: string | undefined;
+      value: unknown;
+    }>,
+    child: React.ReactNode
+  ) => {
+    setShelterValue(event.target.value as number);
+  };
+
   return (
     <div className={styles.container}>
+      <div className={styles.shelters}>
+        <FormControl className={styles.dropdown}>
+          <InputLabel id="demo-simple-select-outlined-label" required>
+            Приют
+          </InputLabel>
+          <Select
+            labelId="demo-simple-select-outlined-label"
+            id="demo-simple-select-outlined"
+            label="Age"
+            required
+            name="shelter"
+            onChange={handleOnShelterChange}
+            value={shelterValue}
+          >
+            {data?.shelterList?.map((shelter) => (
+              <MenuItem value={shelter.id} key={shelter.id}>
+                {shelter.shortName}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </div>
       <div className={styles.buttonContainer}>
         <Button
           variant="contained"

@@ -70,6 +70,8 @@ export const App = () => {
   const [petSizes, setPetSizes] = useState<ISizes[]>([]);
   const [sexTypes, setSexTypes] = useState<ISex[]>([]);
 
+  const [shelterValue, setShelterValue] = useState<number>(1);
+
   const data = {
     breedList,
     shelterList,
@@ -125,9 +127,8 @@ export const App = () => {
     };
 
     try {
-      const dataset = await request(`/data/petsByShelter/1`);
+      const dataset = await request(`/data/petsByShelter/${shelterValue}`);
       setDataset(dataset.result || []);
-      console.log(dataset.result);
     } catch (error) {
       console.log("Error", error);
     }
@@ -135,12 +136,11 @@ export const App = () => {
 
   useEffect(() => {
     setFilter();
-  }, []);
+  }, [shelterValue]);
 
   const { token, login, logout, userId } = useAuth();
   const authorized = !!token;
   const routes = useRoutes(authorized, dogs, cats);
-  console.log(authorized);
   return (
     <AuthContext.Provider
       value={{
@@ -153,6 +153,8 @@ export const App = () => {
         cats,
         data,
         dataset,
+        shelterValue,
+        setShelterValue,
       }}
     >
       <Router>

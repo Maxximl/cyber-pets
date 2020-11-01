@@ -62,47 +62,7 @@ export const AddDataPage = () => {
     wool: "",
   });
 
-  // const [breedList, setBreedList] = useState<IBreed[]>([]);
-  // const [shelterList, setShelterList] = useState<IShelter[]>([]);
-  // const [tailList, setTailList] = useState<ITail[]>([]);
-  // const [petTypeList, setPetTypeList] = useState<IPetType[]>([]);
-  // const [petColorTypes, setPetColorTypes] = useState<IColor[]>([]);
-  // const [petHairTypes, setPetHairTypes] = useState<IHair[]>([]);
-  // const [petEarsTypes, setPetEarsTypes] = useState<IEars[]>([]);
-  // const [petSizes, setPetSizes] = useState<ISizes[]>([]);
-
   const { request } = useHttp();
-
-  // const getData = async () => {
-  //   try {
-  //     const breed = await request("/data/breedList");
-  //     console.log("Data", breed.result);
-  //     const shelter = await request("/data/shelterList");
-  //     setBreedList(breed.result);
-  //     console.log("Data", shelter);
-  //     setShelterList(shelter.result);
-  //     const tail = await request("/data/tailList");
-  //     console.log(tail.result);
-  //     setTailList(tail.result);
-  //     const type = await request("/data/petTypeList");
-  //     console.log(type.result);
-  //     setPetTypeList(type.result);
-  //     const color = await request("/data/petColorTypes");
-  //     setPetColorTypes(color.result);
-  //     const hair = await request("/data/pethairtypes");
-  //     setPetHairTypes(hair.result);
-  //     const ears = await request("/data/petearstypes");
-  //     setPetEarsTypes(ears.result);
-  //     const size = await request("/data/petsizes");
-  //     setPetSizes(size.result);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   getData();
-  // }, []);
 
   const {
     token,

@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import clsx from "clsx";
+import styles from "./Table.module.css";
 import {
   createStyles,
   lighten,
@@ -545,12 +546,26 @@ export default function EnhancedTable(props: { data: Data[] }) {
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={isItemSelected}
-                          inputProps={{ "aria-labelledby": labelId }}
-                        />
+                        <div className={styles.linkcheckbox}>
+                          {" "}
+                          <Checkbox
+                            checked={isItemSelected}
+                            inputProps={{ "aria-labelledby": labelId }}
+                          />
+                          <Link
+                            to={`/pets/${row.id}`}
+                            style={{
+                              cursor: "pointer",
+                              fontSize: "23px",
+                              paddingTop: "7px",
+                              marginRight: "10px",
+                            }}
+                          >
+                            <FiExternalLink color="blue" />
+                          </Link>
+                        </div>
                       </TableCell>
-                      <TableCell
+                      {/* <TableCell
                         padding="checkbox"
                         style={{
                           cursor: "pointer",
@@ -561,7 +576,7 @@ export default function EnhancedTable(props: { data: Data[] }) {
                         <Link to={`/pets/${row.id}`}>
                           <FiExternalLink />
                         </Link>
-                      </TableCell>
+                      </TableCell> */}
                       <TableCell
                         component="th"
                         id={labelId}

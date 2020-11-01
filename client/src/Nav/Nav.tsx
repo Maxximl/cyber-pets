@@ -42,9 +42,6 @@ export const Nav = () => {
         <Link to="/pets">
           <span className={styles.link}>Питомцы</span>
         </Link>
-        <Link to="/">
-          <span className={styles.link}>Новости</span>
-        </Link>
         <Link to="/cameras/all">
           <span className={styles.link}>Камеры</span>
         </Link>
